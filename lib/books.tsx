@@ -1,5 +1,6 @@
 import { franc } from "franc-min";
-import { limit, alphabet } from "@/config";
+import { limit, alphabet, genres } from "@/shared/config";
+import { genreInput } from "@/shared/types";
 
 type apiSearchResults = {
 	key: string;
@@ -139,11 +140,20 @@ async function batchFetchBooks(apiSearchResults: apiSearchResults) {
 
 /**
  * Gets the book descriptions based on user-selected keywords
+ * @param params The keyword to use for the search
  * @returns An array of books with censored descriptions
  */
-export async function getBooks() {
+export async function getBooks(params: genreInput) {
+	const genre = genres[params];
+
+	if (!genre) {
+		throw Error('Invalid genre');
+	}
+
+	const subject = genre.searchValue;
+
 	const response = await fetch(
-		"https://openlibrary.org/search.json?subject=love+fantasy&limit=500&language=eng&fields=key,title,author_name",
+		`https://openlibrary.org/search.json?subject=${subject}&limit=500&language=eng&fields=key,title,author_name`,
 		{
 			headers: {
 				"User-Agent": "BlindBookDatingApp/1.0 (alyssamonera@gmail.com)",
