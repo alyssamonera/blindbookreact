@@ -15,6 +15,7 @@ export default function Home() {
 								<Link href={`/books/${key}`}>{genre.displayValue}</Link>
 							</li>
 						})}
+						<li key="fairytale"><Link href="/books/search?q=fairytale">Fairytale</Link></li>
 					</ul>
 				</div>
 			</main>
