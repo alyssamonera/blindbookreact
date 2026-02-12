@@ -1,22 +1,16 @@
-import Link from "next/link";
-import { genres } from "@/shared/config";
-import { genreInput } from "@/shared/types";
+import GenreList from "@/components/homepage/genre-list";
+import SearchForm from "@/components/homepage/search-form";
 
 export default function Home() {
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-			<main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+			<main className="flex min-h-screen w-full max-w-3xl items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
 				<div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-					<h1>Start your date</h1>
-					<ul>
-						{Object.keys(genres).map((key) => {
-							const genre = genres[key as genreInput];
-							return <li key={genre.searchValue}>
-								<Link href={`/books/${key}`}>{genre.displayValue}</Link>
-							</li>
-						})}
-						<li key="fairytale"><Link href="/books/search?q=fairytale">Fairytale</Link></li>
-					</ul>
+					<h2>Select your date</h2>
+					<GenreList />
+				</div>
+				<div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
+					<SearchForm />
 				</div>
 			</main>
 		</div>
