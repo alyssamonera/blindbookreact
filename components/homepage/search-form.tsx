@@ -11,7 +11,7 @@ export default function SearchForm() {
 
     return <form action={submitSearch}>
         <h2>Or search for another</h2>
-        <input type="text" className="bg-white text-black p-2" name="searchQuery" />
+        <input type="text" className="bg-white text-black border-black border p-2" name="searchQuery" />
         <button className="border p-2">Search</button>
     </form>
 }
