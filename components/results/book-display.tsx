@@ -10,7 +10,7 @@ export default function BookDisplay({ book }: BookDisplayProps) {
 			key={book.id}
 			className="py-3 whitespace-break-spaces border-amber-600 border-3 list-none"
 		>
-			{book.volumeInfo.description}
+			{book.censoredDescription}
 		</li>
 	);
 }

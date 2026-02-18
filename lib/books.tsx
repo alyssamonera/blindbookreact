@@ -21,7 +21,7 @@ function censorBooks(books: bookResult[]) {
 	for (let i = 0; i < books.length; i++) {
 		const currentBook = books[i].volumeInfo;
 
-		books[i].volumeInfo.description = currentBook.description.replaceAll(
+		books[i].censoredDescription = currentBook.description.replaceAll(
 			currentBook.title,
 			"TITLE",
 		);
@@ -38,7 +38,7 @@ function censorBooks(books: bookResult[]) {
 				const authorString = "AUTHOR" + assignedLetter;
 				const lastNameString = "LAST NAME" + assignedLetter;
 
-				books[i].volumeInfo.description = books[i].volumeInfo.description
+				books[i].censoredDescription = books[i].censoredDescription
 					.replaceAll(authorRegex, authorString)
 					.replaceAll(lastNameRegex, lastNameString);
 			});

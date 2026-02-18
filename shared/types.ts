@@ -14,4 +14,5 @@ export type bookResult = {
 		description: string;
 		title: string;
 	};
+	censoredDescription: string
 };
