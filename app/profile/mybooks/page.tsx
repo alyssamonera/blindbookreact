@@ -6,7 +6,11 @@ import { useContext } from "react";
 export default function MyBookPage() {
 	const { selectedBooks } = useContext(BooksContext);
 
-    console.log(selectedBooks)
+	if (!selectedBooks || selectedBooks.length === 0) {
+		return <div>
+			Nothing here yet...
+		</div>
+	}
 
 	return (
 		<div>

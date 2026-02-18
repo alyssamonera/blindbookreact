@@ -23,14 +23,11 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	function saveBookToProfile(book: bookResult) {
 		// TODO: Connect to database
-		console.log(selectedBooks);
 		setSelectedBooks((currentBooks) => [book, ...currentBooks]);
 	}
 
 	function handleSwipe(direction: string, book?: bookResult) {
 		setCurrentIndex((index) => index + 1);
-
-		console.log(direction, book);
 
 		if (direction === "right" && book) {
 			saveBookToProfile(book);
