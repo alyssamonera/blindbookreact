@@ -1,27 +1,35 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BooksContext } from "@/app/context/books-context";
-import { bookResult } from "@/shared/types"
-import BookDisplay from "./book-display"
+import { bookResult } from "@/shared/types";
+import BookDisplay from "./book-display";
 import SwipeButton from "./swipe-button";
 
 type BooksCarouselProps = {
-    books: bookResult[]
-}
+	books: bookResult[];
+};
 
-export default function BooksCarousel({books}: BooksCarouselProps) {
-    if (books.length === 0) {
-        notFound();
-    }
+export default function BooksCarousel({ books }: BooksCarouselProps) {
+	if (books.length === 0) {
+		notFound();
+	}
 
-    const { currentIndex } = useContext(BooksContext);
-    const book = books[currentIndex];
+	const { currentIndex, resetIndex } = useContext(BooksContext);
+	const book = books[currentIndex];
 
-    return <div>
-        <BookDisplay book={book} />
-        <SwipeButton direction="left" />
-        <SwipeButton direction="right" book={book} />
-    </div>
+	// On pageload, reset the index back to 0
+	useEffect(() => {
+		resetIndex();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return (
+		<div>
+			<BookDisplay book={book} />
+			<SwipeButton direction="left" />
+			<SwipeButton direction="right" book={book} />
+		</div>
+	);
 }

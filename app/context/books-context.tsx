@@ -7,12 +7,14 @@ type BooksContextObject = {
 	currentIndex: number;
 	selectedBooks: bookResult[];
 	handleSwipe: (direction: string, book?: bookResult) => void;
+	resetIndex: () => void;
 };
 
 export const BooksContext = createContext<BooksContextObject>({
 	currentIndex: 0,
 	selectedBooks: [],
 	handleSwipe: () => {},
+	resetIndex: () => {}
 });
 
 const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -34,10 +36,15 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	}
 
+	function resetIndex() {
+		setCurrentIndex(0);
+	}
+
 	const ctx: BooksContextObject = {
 		currentIndex,
 		selectedBooks,
 		handleSwipe,
+		resetIndex
 	};
 
 	return <BooksContext.Provider value={ctx}>{children}</BooksContext.Provider>;
