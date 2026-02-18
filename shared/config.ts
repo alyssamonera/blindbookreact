@@ -1,21 +1,23 @@
+import { bookResult } from "@/shared/types";
+
 export const limit = 10;
 export const genres = {
 	romance: {
 		displayValue: "Romance",
-		searchValue: "love+fiction"
+		searchValue: "love+fiction",
 	},
 	memoir: {
-		displayValue: "Memoir", 
-		searchValue: "personal_memoirs"
+		displayValue: "Memoir",
+		searchValue: "personal_memoirs",
 	},
 	"science%20fiction": {
 		displayValue: "Sci-Fi",
-		searchValue: "science_fiction"
+		searchValue: "science_fiction",
 	},
 	fantasy: {
 		displayValue: "Fantasy",
-		searchValue: "fantasy"
-	}
+		searchValue: "fantasy",
+	},
 } as const;
 export const alphabet = [
 	"A",
@@ -44,4 +46,88 @@ export const alphabet = [
 	"X",
 	"Y",
 	"Z",
+];
+
+export const DUMMY_BOOKS: bookResult[] = [
+	{
+		id: "1",
+		volumeInfo: {
+			description: "This is the skin of a monster Bella",
+			authors: ["Stephenie Meyer"],
+			title: "Twilight",
+		},
+	},
+	{
+		id: "2",
+		volumeInfo: {
+			description: "Hey loca where you been",
+			authors: ["Stephenie Meyer"],
+			title: "New Moon",
+		},
+	},
+	{
+		id: "3",
+		volumeInfo: {
+			description: "The angel from that one cancelled show is in this one",
+			authors: ["Stephenie Meyer"],
+			title: "Breaking Dawn",
+		},
+	},
+	{
+		id: "4",
+		volumeInfo: {
+			description:
+				"Paladin tries and fails to kill a goddess and somehow they end up together",
+			authors: ["Author"],
+			title: "Daughter of the Sun",
+		},
+	},
+	{
+		id: "5",
+		volumeInfo: {
+			description: "Your hair is like starlight!",
+			authors: ["Diana Wynne Jones"],
+			title: "Howl's Moving Castle",
+		},
+	},
+	{
+		id: "6",
+		volumeInfo: {
+			description: "A beauty and the beast metaphor",
+			authors: ["Sarah J. Maas"],
+			title: "A Court of Fey and Flowers",
+		},
+	},
+	{
+		id: "7",
+		volumeInfo: {
+			description: "A lot of parkour and a love triangle",
+			authors: ["I Forget"],
+			title: "Steeplejack",
+		},
+	},
+	{
+		id: "8",
+		volumeInfo: {
+			description: "I vant to suck your blad",
+			authors: ["Bram Stoker"],
+			title: "Dracula",
+		},
+	},
+	{
+		id: "9",
+		volumeInfo: {
+			description: "A guy creates another guy all by himself",
+			authors: ["Mary Shelley"],
+			title: "Frankenstein",
+		},
+	},
+	{
+		id: "10",
+		volumeInfo: {
+			description: "Mr. Darcy fumbles the bag multiple times until he doesn't",
+			authors: ["Jane Austen"],
+			title: "Pride & Prejudice",
+		},
+	},
 ];
