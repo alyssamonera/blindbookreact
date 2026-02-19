@@ -1,11 +1,19 @@
+import { logout } from "@/lib/actions/login";
+import { auth } from "@/lib/auth/server";
 import Link from "next/link";
 
-export default function Header() {
+export default async function Header() {
+	const { data: session } = await auth.getSession();
+
 	return (
 		<header className="flex gap-4">
 			<div><h1 className="font-bold"><Link href="/">Blind Book Dating</Link></h1></div>
-			<ul>
+			<ul className="flex gap-4">
+				{session?.user && <>
 				<li><Link href="/profile">Profile</Link></li>
+				<li><button onClick={logout} className="cursor-pointer">Logout</button></li>
+				</>}
+				{(!session || !session?.user) && <li><Link href="/login">Login</Link></li>}
 			</ul>
 		</header>
 	);
