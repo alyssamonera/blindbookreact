@@ -15,6 +15,10 @@ async function BooksCarouselContainer({ params, searchParams }: Props) {
 
 	const books = await getBooks(slug, q);
 
+	if (!books || books.length === 0) {
+		return <div>No books found in the container</div>;
+	}
+
 	return <BooksCarousel books={books} />
 }
 

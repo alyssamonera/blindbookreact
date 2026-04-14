@@ -13,10 +13,11 @@ type BooksCarouselProps = {
 
 export default function BooksCarousel({ books }: BooksCarouselProps) {
 	if (books.length === 0) {
-		notFound();
+		return <div>No books found in the carousel</div>;
 	}
 
-	const { currentIndex, resetIndex } = useContext(BooksContext);
+	const { currentIndex, resetIndex, handleMaxIndex } = useContext(BooksContext);
+	handleMaxIndex(books.length);
 	const book = books[currentIndex];
 
 	// On pageload, reset the index back to 0
