@@ -1,6 +1,10 @@
 import { alphabet } from "@/shared/config";
 import { bookResult } from "@/shared/types";
 import { neon } from "@neondatabase/serverless";
+import { auth } from "@/lib/auth/server";
+
+const { data: session } = await auth.getSession();
+
 const sql = neon(process.env.DATABASE_URL!);
 
 let cache: Record<string, any> = {};
@@ -119,18 +123,64 @@ function shuffleBooks(selectedData: bookResult[]) {
 	return selectedData;
 }
 
+export async function getBooksByIds(bookIds: string[]) {
+    if (bookIds.length === 0) return [];
+
+    const key = process.env.API_KEY;
+    if (!key) {
+        console.warn("[getBooksByIds] Missing API_KEY");
+        return [];
+    }
+
+    const results: bookResult[] = [];
+    for (const id of bookIds) {
+        const res = await apiCall(
+            `https://www.googleapis.com/books/v1/volumes/${id}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description&key=${key}`,
+        );
+        if (res) {
+            results.push(res);
+        }
+        // delay to reduce chance of rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+    }
+
+    return results;
+}
+
+export async function getUserBooks(userId: string) {
+    if (!userId || userId === '') return [];
+
+    const likedBookIds = await sql`
+        SELECT book_id FROM public.liked_books WHERE user_id = ${userId}
+    `;
+
+    if (!likedBookIds || likedBookIds.length === 0) {
+        return [];
+    }
+
+    const books = await getBooksByIds(likedBookIds.map((row) => row.book_id));
+    return books;
+}
+
 /**
  * Filters results by description quality, censors, and randomizes
  * @param selectedData 
  * @returns 
  */
-function curateBooks(selectedData: bookResult[]) {
+async function curateBooks(selectedData: bookResult[]) {
 	if (!selectedData || selectedData.length === 0) {
 		return [];
 	}
 
+    const userBooks = await getUserBooks(session?.user?.id || '');
+    
+    // Filter out results that are already in the userBooks list, if we have any
+    const filteredForUser = userBooks.length > 0
+        ? selectedData.filter(item => !userBooks.some(ub => ub.id === item.id))
+        : selectedData;
+
 	const filteredData =
-		selectedData.filter(
+		filteredForUser.filter(
 			(item) =>
 				!!item.volumeInfo?.description &&
 				item.volumeInfo.description.length >= 100 &&
@@ -205,7 +255,7 @@ export async function getBooks(
 	// Get as many results as possible, then filter for quality and randomize
 	const selectedData: bookResult[] = await batchCallBooks(querystring);
 
-	const finalResults = curateBooks(selectedData);
+	const finalResults = await curateBooks(selectedData);
 
 	if (finalResults.length > 0) {
 		cache[`books:${querystring}`] = {finalResults, timestamp: Date.now()};
@@ -216,43 +266,4 @@ export async function getBooks(
 	}
 
 	return finalResults;
-}
-
-export async function getBooksByIds(bookIds: string[]) {
-    if (bookIds.length === 0) return [];
-
-    const key = process.env.API_KEY;
-    if (!key) {
-        console.warn("[getBooksByIds] Missing API_KEY");
-        return [];
-    }
-
-    const results: bookResult[] = [];
-    for (const id of bookIds) {
-        const res = await apiCall(
-            `https://www.googleapis.com/books/v1/volumes/${id}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description&key=${key}`,
-        );
-        if (res) {
-            results.push(res);
-        }
-        // delay to reduce chance of rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-    }
-
-    return results;
-}
-
-export async function getUserBooks(userId: string) {
-    if (!userId || userId === '') return [];
-
-    const likedBookIds = await sql`
-        SELECT book_id FROM public.liked_books WHERE user_id = ${userId}
-    `;
-
-    if (!likedBookIds || likedBookIds.length === 0) {
-        return [];
-    }
-
-    const books = await getBooksByIds(likedBookIds.map((row) => row.book_id));
-    return books;
 }
