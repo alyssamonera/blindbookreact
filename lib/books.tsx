@@ -1,9 +1,6 @@
 import { alphabet } from "@/shared/config";
 import { bookResult } from "@/shared/types";
 import { neon } from "@neondatabase/serverless";
-import { auth } from "@/lib/auth/server";
-
-const { data: session } = await auth.getSession();
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -165,14 +162,15 @@ export async function getUserBooks(userId: string) {
 /**
  * Filters results by description quality, censors, and randomizes
  * @param selectedData 
+ * @param userId - If provided, will filter out books the user has already liked
  * @returns 
  */
-async function curateBooks(selectedData: bookResult[]) {
+async function curateBooks(selectedData: bookResult[], userId?: string) {
 	if (!selectedData || selectedData.length === 0) {
 		return [];
 	}
 
-    const userBooks = await getUserBooks(session?.user?.id || '');
+    const userBooks = await getUserBooks(userId || '');
     
     // Filter out results that are already in the userBooks list, if we have any
     const filteredForUser = userBooks.length > 0
@@ -245,6 +243,7 @@ async function batchCallBooks(querystring: string) {
 export async function getBooks(
 	params: string,
 	q?: string,
+    userId?: string
 ) {
 	// Find out how many total results there are
 	const paramsQuery =
@@ -255,7 +254,7 @@ export async function getBooks(
 	// Get as many results as possible, then filter for quality and randomize
 	const selectedData: bookResult[] = await batchCallBooks(querystring);
 
-	const finalResults = await curateBooks(selectedData);
+	const finalResults = await curateBooks(selectedData, userId);
 
 	if (finalResults.length > 0) {
 		cache[`books:${querystring}`] = {finalResults, timestamp: Date.now()};
