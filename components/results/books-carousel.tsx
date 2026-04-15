@@ -27,10 +27,13 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
 	}, [books]);
 
 	return (
-		<div>
+		<div className="mx-auto w-full max-w-xl relative">
 			<BookDisplay book={book} />
-			<SwipeButton direction="left" />
-			<SwipeButton direction="right" book={book} />
+			<div className="flex justify-between mt-4">
+				<SwipeButton direction="left" />
+				<SwipeButton direction="right" book={book} />
+			</div>
+
 		</div>
 	);
 }

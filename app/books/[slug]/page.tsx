@@ -27,8 +27,13 @@ async function BooksCarouselContainer({ params, searchParams }: Props) {
 
 export default async function BooksPage({ params, searchParams }: Props) {
 	return (
-		<Suspense fallback={<LoadingPageRoot />}>
-			<BooksCarouselContainer params={params} searchParams={searchParams} />
-		</Suspense>
+		<div>
+			<div className="text-center my-8">
+				<h1 className="text-2xl font-bold">Time To Swipe</h1>
+			</div>
+			<Suspense fallback={<LoadingPageRoot />}>
+				<BooksCarouselContainer params={params} searchParams={searchParams} />
+			</Suspense>
+		</div>
 	);
 }

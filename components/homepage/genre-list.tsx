@@ -13,7 +13,7 @@ export default function GenreList() {
 					</li>
 				);
 			})}
-			<li key="fairytale">
+			<li key="fairytale" className="hover:underline">
 				<Link href="/books/search?q=fairytale">Fairytale</Link>
 			</li>
 		</ul>

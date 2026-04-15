@@ -8,7 +8,7 @@ export default function BookDisplay({ book }: BookDisplayProps) {
 	return (
 		<li
 			key={book.id}
-			className="py-3 whitespace-break-spaces border-amber-600 border-3 list-none"
+			className="p-3 whitespace-break-spaces border-green-900 border-3 list-none rounded-xl"
 		>
 			{book.censoredDescription}
 		</li>
