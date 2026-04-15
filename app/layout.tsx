@@ -31,6 +31,7 @@ export default function RootLayout({
 			>
 				<Header />
 				<BooksContextProvider>{children}</BooksContextProvider>
+				<div id="modal"></div>
 			</body>
 		</html>
 	);

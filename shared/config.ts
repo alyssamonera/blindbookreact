@@ -109,7 +109,7 @@ export const DUMMY_BOOKS: bookResult[] = [
 		id: "7",
 		volumeInfo: {
 			description: "A lot of parkour and a love triangle",
-			authors: ["I Forget"],
+			authors: ["I Forget", "A second one"],
 			title: "Steeplejack",
 		},
 		censoredDescription: "A lot of parkour and a love triangle",
