@@ -8,7 +8,7 @@ export default function GenreList() {
 			{Object.keys(genres).map((key) => {
 				const genre = genres[key as genreInput];
 				return (
-					<li key={genre.searchValue}>
+					<li key={genre.searchValue} className="hover:underline">
 						<Link href={`/books/${key}`}>{genre.displayValue}</Link>
 					</li>
 				);

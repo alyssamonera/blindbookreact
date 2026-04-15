@@ -13,7 +13,7 @@ export default function TileFooter({ book, onRemove }: { book: bookResult; onRem
 
     return (
         <div className="footer">
-            <button onClick={() => setShowModal(true)} className="bg-red-800 text-white px-4 py-1 rounded cursor-pointer">Remove</button>
+            <button onClick={() => setShowModal(true)} className="bg-red-800 hover:bg-red-500 text-white px-4 py-1 rounded cursor-pointer">Remove</button>
             {showModal && <RemoveBook volumeInfo={book.volumeInfo} bookId={book.id} onClose={handleClose} onRemove={onRemove} />}
         </div>
     );

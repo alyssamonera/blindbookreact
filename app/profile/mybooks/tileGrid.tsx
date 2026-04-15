@@ -19,7 +19,7 @@ export default function TileGrid({ books }: { books: bookResult[] }) {
                         <div className="flex-1 border-b-2 border-gray-200 mb-4">
                             <h3 className="text-lg font-semibold mb-2">{book.volumeInfo.title}</h3>
                             <p className="text-sm text-gray-600 mb-4">by {book.volumeInfo.authors.join(", ")}</p>
-                            <div className="text-sm text-gray-700 mb-4 max-h-50 overflow-y-scroll">
+                            <div className="text-sm text-gray-700 mb-4 max-h-50 overflow-y-auto">
                                 <p dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}></p>
                             </div>
                         </div>

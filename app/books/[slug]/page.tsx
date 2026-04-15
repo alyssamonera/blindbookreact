@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getBooks } from "@/lib/books";
 import BooksCarousel from "@/components/results/books-carousel";
+import LoadingPageRoot from "@/app/loading";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,7 @@ async function BooksCarouselContainer({ params, searchParams }: Props) {
 
 export default async function BooksPage({ params, searchParams }: Props) {
 	return (
-		<Suspense fallback={<p>Loading...</p>}>
+		<Suspense fallback={<LoadingPageRoot />}>
 			<BooksCarouselContainer params={params} searchParams={searchParams} />
 		</Suspense>
 	);
