@@ -1,10 +1,9 @@
-"use client";
+import { getUserBooks } from "@/lib/books";
+import { auth } from "@/lib/auth/server";
 
-import { BooksContext } from "@/app/context/books-context";
-import { useContext } from "react";
-
-export default function MyBookPage() {
-	const { selectedBooks } = useContext(BooksContext);
+export default async function MyBookPage() {
+	const { data: session } = await auth.getSession();
+	const selectedBooks = await getUserBooks(session?.user.id || '');
 
 	if (!selectedBooks || selectedBooks.length === 0) {
 		return <div>
@@ -22,16 +21,18 @@ export default function MyBookPage() {
 								<h2>{book.volumeInfo.title}</h2>
 								<p>
 									by
-                                    {" "}
+									{" "}
 									{book.volumeInfo.authors.map((author) => {
 										return <span key={author}>{author}</span>;
 									})}
 								</p>
 							</div>
-                            <div className="body">
-                                    <h2>Summary</h2>
-                                    <p className="whitespace-break-spaces">{book.volumeInfo.description}</p>
-                            </div>
+							<div className="body">
+								<h2>Summary</h2>
+								<p className="whitespace-break-spaces" dangerouslySetInnerHTML={{
+									__html: book.volumeInfo.description,
+								}}></p>
+							</div>
 						</li>
 					);
 				})}

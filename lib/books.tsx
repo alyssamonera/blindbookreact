@@ -1,5 +1,7 @@
 import { alphabet } from "@/shared/config";
 import { bookResult } from "@/shared/types";
+import { neon } from "@neondatabase/serverless";
+const sql = neon(process.env.DATABASE_URL!);
 
 let cache: Record<string, any> = {};
 
@@ -55,7 +57,7 @@ function censorBooks(books: bookResult[]) {
  * @param url The url to fetch
  * @returns resData - The results from the call
  */
-export async function apiCall(url: string, retries = 4): Promise<{ totalItems: number; items: bookResult[]; error: string; } | null> {
+export async function apiCall(url: string, retries = 4): Promise<any> {
     const baseBackoff = 1200; // ms - increase base so we wait longer between attempts
     const maxJitter = 800;
 
@@ -130,7 +132,7 @@ function curateBooks(selectedData: bookResult[]) {
 	const filteredData =
 		selectedData.filter(
 			(item) =>
-				!!item.volumeInfo.description &&
+				!!item.volumeInfo?.description &&
 				item.volumeInfo.description.length >= 100 &&
 				!isBoilerplate(item.volumeInfo.description),
 		) || [];
@@ -214,4 +216,43 @@ export async function getBooks(
 	}
 
 	return finalResults;
+}
+
+export async function getBooksByIds(bookIds: string[]) {
+    if (bookIds.length === 0) return [];
+
+    const key = process.env.API_KEY;
+    if (!key) {
+        console.warn("[getBooksByIds] Missing API_KEY");
+        return [];
+    }
+
+    const results: bookResult[] = [];
+    for (const id of bookIds) {
+        const res = await apiCall(
+            `https://www.googleapis.com/books/v1/volumes/${id}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description&key=${key}`,
+        );
+        if (res) {
+            results.push(res);
+        }
+        // delay to reduce chance of rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+    }
+
+    return results;
+}
+
+export async function getUserBooks(userId: string) {
+    if (!userId || userId === '') return [];
+
+    const likedBookIds = await sql`
+        SELECT book_id FROM public.liked_books WHERE user_id = ${userId}
+    `;
+
+    if (!likedBookIds || likedBookIds.length === 0) {
+        return [];
+    }
+
+    const books = await getBooksByIds(likedBookIds.map((row) => row.book_id));
+    return books;
 }

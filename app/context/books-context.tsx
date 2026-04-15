@@ -5,7 +5,6 @@ import { bookResult } from "@/shared/types";
 
 type BooksContextObject = {
 	currentIndex: number;
-	selectedBooks: bookResult[];
 	handleSwipe: (direction: string, book?: bookResult) => void;
 	resetIndex: () => void;
 	handleMaxIndex: (index: number) => void;
@@ -13,7 +12,6 @@ type BooksContextObject = {
 
 export const BooksContext = createContext<BooksContextObject>({
 	currentIndex: 0,
-	selectedBooks: [],
 	handleSwipe: () => {},
 	resetIndex: () => {},
 	handleMaxIndex: () => {},
@@ -23,12 +21,16 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [selectedBooks, setSelectedBooks] = useState<bookResult[]>([]);
 	const [maxIndex, setMaxIndex] = useState<number | null>(null);
 
-	function saveBookToProfile(book: bookResult) {
-		// TODO: Connect to database
-		setSelectedBooks((currentBooks) => [book, ...currentBooks]);
+	async function saveBookToProfile(book: bookResult) {
+		const result = await fetch('/api/like-book', {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({bookId: book.id})
+		});
+
+		// TODO: Error handling
 	}
 
 	function handleSwipe(direction: string, book?: bookResult) {
@@ -53,10 +55,9 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const ctx: BooksContextObject = {
 		currentIndex,
-		selectedBooks,
 		handleSwipe,
 		resetIndex,
-		handleMaxIndex
+		handleMaxIndex,
 	};
 
 	return <BooksContext.Provider value={ctx}>{children}</BooksContext.Provider>;

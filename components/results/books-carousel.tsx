@@ -17,14 +17,14 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
 	}
 
 	const { currentIndex, resetIndex, handleMaxIndex } = useContext(BooksContext);
-	handleMaxIndex(books.length);
 	const book = books[currentIndex];
 
 	// On pageload, reset the index back to 0
 	useEffect(() => {
 		resetIndex();
+		handleMaxIndex(books.length);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [books]);
 
 	return (
 		<div>
