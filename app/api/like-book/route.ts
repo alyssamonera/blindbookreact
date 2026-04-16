@@ -5,11 +5,15 @@ const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(req: Request) {
     try {
-        const { bookId } = await req.json();
+        const { id, volumeInfo } = await req.json();
 
-        if (!bookId) {
+        if (!id) {
             return new Response(null, { status: 204 });
         }
+
+        const {title, description, authors} = volumeInfo;
+
+        const authorsString = Array.isArray(authors) ? authors.join(', ') : 'Unknown Author';
 
         const { data: session } = await auth.getSession();
 
@@ -20,8 +24,8 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         const result = await sql`
-            INSERT INTO liked_books (user_id, book_id)
-            VALUES (${userId}, ${bookId})
+            INSERT INTO liked_books (user_id, book_id, title, description, authors)
+            VALUES (${userId}, ${id}, ${title}, ${description}, ${authorsString})
             ON CONFLICT (user_id, book_id) DO NOTHING
             RETURNING book_id
         `;
