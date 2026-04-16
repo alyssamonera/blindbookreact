@@ -27,7 +27,7 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		const result = await fetch('/api/like-book', {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({bookId: book.id})
+			body: JSON.stringify(book)
 		});
 
 		// TODO: Error handling
