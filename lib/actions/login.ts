@@ -51,3 +51,9 @@ export async function login(prevState: FormState, formData: FormData): Promise<F
         error: true
     }
 }
+
+export async function getSession() {
+    const { data: session } = await auth.getSession();
+
+    return session;
+}

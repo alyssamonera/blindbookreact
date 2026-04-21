@@ -1,9 +1,8 @@
-import { logout } from "@/lib/actions/login";
-import { auth } from "@/lib/auth/server";
+import { logout, getSession } from "@/lib/actions/login";
 import Link from "next/link";
 
 export default async function Header() {
-	const { data: session } = await auth.getSession();
+	const session = await getSession();
 
 	return (
 		<header className="flex gap-4">
