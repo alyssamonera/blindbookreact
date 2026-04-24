@@ -9,6 +9,7 @@ export default async function Header() {
 		<header className="flex gap-4">
 			<div><h1 className="font-bold hover:underline"><Link href="/">Blind Book Dating</Link></h1></div>
 			<ul className="flex gap-4">
+				<li className="hover:underline"><Link href="/books/demo">Demo</Link></li>
 				{session?.user && <>
 				<li className="hover:underline"><Link href="/profile">Profile</Link></li>
 				<li><button onClick={logout} className="cursor-pointer hover:underline">Logout</button></li>

@@ -1,6 +1,7 @@
 import { bookResult } from "@/shared/types";
 import { neon } from "@neondatabase/serverless";
 import { tokenProximitySpans, fuzzySpans } from "./censor";
+import { DUMMY_BOOKS } from "@/shared/config";
 
 const ERA_FILTERS = [
     'before:1970',
@@ -349,6 +350,11 @@ export async function getBooks(
         params && params !== "search" ? `subject:"${params}"` : null;
     const customQuery = params === "search" && q ? q : null;
     const querystring = customQuery || paramsQuery || '';
+
+    // Select test books to demonstrate the censorship functionality
+    if (params && params === 'demo') {
+        return curateBooks(DUMMY_BOOKS);
+    }
 
     console.log('[getBooks] cache', cache);
 
