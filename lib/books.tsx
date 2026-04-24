@@ -1,6 +1,7 @@
-import { alphabet } from "@/shared/config";
 import { bookResult } from "@/shared/types";
 import { neon } from "@neondatabase/serverless";
+import { tokenProximitySpans, fuzzySpans } from "./censor";
+import { DUMMY_BOOKS } from "@/shared/config";
 
 const ERA_FILTERS = [
     'before:1970',
@@ -38,6 +39,44 @@ function isBoilerplate(description: string) {
 }
 
 /**
+ * Looks for title/authors in description and censors
+ * @param description The description to edit
+ * @param phrases The phrases to censor
+ * @returns The censored description
+ */
+function censorDescription(description: string, phrases: string[]) {
+    const spans = [];
+    const replacement = '█';
+
+    // Finds matching spans
+    for (const phrase of phrases) {
+        const found = [...tokenProximitySpans(description, phrase), ...fuzzySpans(description, phrase)];
+
+        spans.push(...found);
+    }
+
+    // Sort and merge overlapping spans
+    spans.sort((a, b) => a.start - b.start); // Orders spans by where they appear left to right
+    const merged = [];
+    for (const span of spans) {
+        const prev = merged[merged.length -1]; // The last span already added to merged
+        if (prev && span.start <= prev.end) { // If prev overlaps with the current span, stretch prev to the end of the current span
+            prev.end = Math.max(prev.end, span.end);
+        } else {
+            merged.push({...span}); // If there's no overlap, push the new span
+        }
+    }
+
+    // Replace spans back-to-front so indexes stay valid
+    let result = description;
+    for (const {start, end} of merged.reverse()) {
+        result = result.slice(0, start) + replacement.repeat(end - start) + result.slice(end);
+    }
+
+    return result
+}
+
+/**
  * Replaces all instances of the title and author from the description string
  * @param books The selected array of simplified book objects
  * @returns The selected array of simplified book objects, now with censored descriptions
@@ -45,29 +84,14 @@ function isBoilerplate(description: string) {
 function censorBooks(books: bookResult[]) {
     for (let i = 0; i < books.length; i++) {
         const currentBook = books[i].volumeInfo;
-
-        books[i].censoredDescription = currentBook.description.replaceAll(
-            currentBook.title,
-            "TITLE",
-        );
+        const { description } = currentBook;
+        const phrases = [currentBook.title];
 
         if (currentBook.authors) {
-            currentBook.authors.forEach((author: string, index) => {
-                const assignedLetter =
-                    currentBook.authors.length > 1 ? " " + alphabet[index] : "";
-                const authorRegex = new RegExp(`\\b${author}\\b`, "gi");
-
-                const lastName = author.trim().split(/\s+/).pop() ?? "";
-                const lastNameRegex = new RegExp(`\\b${lastName}\\b`, "gi");
-
-                const authorString = "AUTHOR" + assignedLetter;
-                const lastNameString = "LAST NAME" + assignedLetter;
-
-                books[i].censoredDescription = books[i].censoredDescription
-                    .replaceAll(authorRegex, authorString)
-                    .replaceAll(lastNameRegex, lastNameString);
-            });
+            phrases.push(...currentBook.authors);
         }
+
+        books[i].censoredDescription = censorDescription(description, phrases);
     }
 
     return books;
@@ -326,6 +350,11 @@ export async function getBooks(
         params && params !== "search" ? `subject:"${params}"` : null;
     const customQuery = params === "search" && q ? q : null;
     const querystring = customQuery || paramsQuery || '';
+
+    // Select test books to demonstrate the censorship functionality
+    if (params && params === 'demo') {
+        return curateBooks(DUMMY_BOOKS);
+    }
 
     console.log('[getBooks] cache', cache);
 

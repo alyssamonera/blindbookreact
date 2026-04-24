@@ -16,7 +16,7 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
 		return <div>No books found in the carousel</div>;
 	}
 
-	const { currentIndex, resetIndex, handleMaxIndex } = useContext(BooksContext);
+	const { currentIndex, hasReachedEnd, resetIndex, handleMaxIndex } = useContext(BooksContext);
 	const book = books[currentIndex];
 
 	// On pageload, reset the index back to 0
@@ -25,6 +25,10 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
 		handleMaxIndex(books.length);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [books]);
+
+	if (hasReachedEnd) {
+		return <div className="text-center"><h3 className="text-lg font-bold">Out of books</h3> <p>Pick another genre or come back and try again later.</p></div>
+	}
 
 	return (
 		<div className="mx-auto w-full max-w-xl relative">
