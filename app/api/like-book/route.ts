@@ -11,7 +11,7 @@ export async function POST(req: Request) {
             return new Response(null, { status: 204 });
         }
 
-        const {title, description, authors} = volumeInfo;
+        const {title, description, authors, imageLinks} = volumeInfo;
 
         const authorsString = Array.isArray(authors) ? authors.join(', ') : 'Unknown Author';
 
@@ -24,8 +24,8 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         const result = await sql`
-            INSERT INTO liked_books (user_id, book_id, title, description, authors)
-            VALUES (${userId}, ${id}, ${title}, ${description}, ${authorsString})
+            INSERT INTO liked_books (user_id, book_id, title, description, authors, image)
+            VALUES (${userId}, ${id}, ${title}, ${description}, ${authorsString}, ${imageLinks.thumbnail})
             ON CONFLICT (user_id, book_id) DO NOTHING
             RETURNING book_id
         `;
