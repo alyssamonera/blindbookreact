@@ -23,7 +23,7 @@ export default async function MyBookPage() {
 	return (
 		<>
 			<div className="text-center my-3">
-				<h1 className="text-3xl font-bold">My Books</h1>
+				<h1 className="text-3xl pt-serif-bold">My Books</h1>
 			</div>
 			<Suspense fallback={<LoadingPageRoot />}>
 				<TileContainer />

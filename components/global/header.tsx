@@ -7,7 +7,7 @@ export default async function Header() {
 
 	return (
 		<header className="header p-5 m-2 lowercase pt-serif-regular">
-			<ul className="flex flex-wrap gap-10">
+			<ul className="flex flex-wrap gap-4 md:gap-10">
 				<HeaderLink><Link href="/" className="font-bold">Blind Book Dating</Link></HeaderLink>
 				<HeaderLink><Link href="/about">About</Link></HeaderLink>
 				<HeaderLink><Link href="/books/demo">Demo</Link></HeaderLink>
