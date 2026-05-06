@@ -7,8 +7,8 @@ type inputProps = {
 }
 
 export default function Input({ id, label, ...props }: inputProps) {
-    return <p>
-        <label htmlFor={id} className="mx-3">{label}</label>
+    return <p className="my-3">
+        <label htmlFor={id} className="mr-3">{label}</label>
         <input {...props} className="border border-black" />
     </p>
 }
