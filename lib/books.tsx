@@ -12,6 +12,8 @@ const ERA_FILTERS = [
     'after:2018',
 ];
 
+const fields = 'items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description,volumeInfo/imageLinks/thumbnail)';
+
 const CACHE_TTL = 1000 * 60 * 60 * 12; // 12 hours
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -183,7 +185,7 @@ export async function getBookById(bookId: string, key?: string): Promise<bookRes
     }
 
     const res = await apiCall(
-        `https://www.googleapis.com/books/v1/volumes/${bookId}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description&key=${key}`,
+        `https://www.googleapis.com/books/v1/volumes/${bookId}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description,volumeInfo/imageLinks/thumbnail&key=${key}`,
     );
     return res || null;
 }
@@ -197,7 +199,7 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
     if (!userId || userId === '') return [];
 
     const likedBooks = await sql`
-        SELECT book_id, title, description, authors FROM public.liked_books WHERE user_id = ${userId}
+        SELECT book_id, title, description, authors, image FROM public.liked_books WHERE user_id = ${userId}
     `;
 
     if (!likedBooks || likedBooks.length === 0) {
@@ -211,6 +213,9 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
                 title: row.title,
                 description: row.description,
                 authors: row.authors ? row.authors.split(',').map((a: string) => a.trim()) : [],
+                imageLinks: {
+                    thumbnail: row.image || ''
+                }
             },
             censoredDescription: row.description,
         };
@@ -257,7 +262,7 @@ async function getByEra(querystring: string, seen: Set<string>, pageSize: number
         if (signal?.aborted) break;
 
         const batch = await apiCall(
-            `https://www.googleapis.com/books/v1/volumes?q=${querystring}+${era}&langRestrict=en&maxResults=${pageSize}&startIndex=0&fields=items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description)&key=${key}`, signal
+            `https://www.googleapis.com/books/v1/volumes?q=${querystring}+${era}&langRestrict=en&maxResults=${pageSize}&startIndex=0&fields=${fields}&key=${key}`, signal
         );
 
         if (!batch?.items?.length) {
@@ -283,7 +288,7 @@ async function getByEra(querystring: string, seen: Set<string>, pageSize: number
             if (signal?.aborted) break;
 
             const nextBatch = await apiCall(
-                `https://www.googleapis.com/books/v1/volumes?q=${querystring}+${era}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description)&key=${key}`, signal
+                `https://www.googleapis.com/books/v1/volumes?q=${querystring}+${era}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=${fields}&key=${key}`, signal
             );
             if (!nextBatch?.items?.length) break;
             for (const item of nextBatch.items) {
@@ -318,7 +323,7 @@ async function batchCallBooks(querystring: string, signal?: AbortSignal) {
             if (signal?.aborted) break;
 
             const nextBatch = await apiCall(
-                `https://www.googleapis.com/books/v1/volumes?q=${querystring}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description)&key=${key}`, signal
+                `https://www.googleapis.com/books/v1/volumes?q=${querystring}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=${fields}&key=${key}`, signal
             );
             if (!nextBatch?.items?.length) break;
             for (const item of nextBatch.items) {
@@ -355,9 +360,7 @@ export async function getBooks(
     if (params && params === 'demo') {
         return curateBooks(DUMMY_BOOKS);
     }
-
-    console.log('[getBooks] cache', cache);
-
+    
     const cached = cache[`books:${querystring}`];
 
     // Fresh cache — return immediately

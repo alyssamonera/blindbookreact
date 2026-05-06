@@ -42,8 +42,8 @@ export async function login(prevState: FormState, formData: FormData): Promise<F
     }
 
     if (data && data.user) {
-        revalidatePath('/profile');
-        redirect('/profile');
+        revalidatePath('/profile/mybooks');
+        redirect('/profile/mybooks');
     }
 
     return {
