@@ -15,7 +15,7 @@ export default function SearchForm() {
 
     return <form action={submitSearch}>
         <h2>Or search for another</h2>
-        <input type="text" className="bg-white text-black border-black border p-2" name="searchQuery" />
-        <button className="border p-2 cursor-pointer">Search</button>
+        <input type="text" className="bg-white text-black border-black border p-2 rounded-md" name="searchQuery" />
+        <button className="border rounded-md p-2 cursor-pointer bg-green-900 text-white hover:bg-green-300 hover:text-black transition-colors duration-300">Search</button>
     </form>
 }

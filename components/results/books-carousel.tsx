@@ -32,6 +32,9 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
 
 	return (
 		<div className="mx-auto w-full max-w-xl relative">
+			<div className="text-center my-8">
+				<h1 className="text-2xl font-bold">Time To Swipe</h1>
+			</div>
 			<BookDisplay book={book} />
 			<div className="flex justify-between mt-4">
 				<SwipeButton direction="left" />
