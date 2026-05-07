@@ -3,11 +3,15 @@ import SearchForm from "@/components/homepage/search-form";
 
 export default function Home() {
 	return (
-		<div className="flex items-center justify-center dark:bg-black">
-			<main className="flex flex-col sm:flex-row w-full max-w-3xl items-center justify-between py-32 px-16 bg-white rounded-md dark:bg-black sm:items-start">
-				<div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+		<div className="flex flex-col items-center justify-center dark:bg-black">
+			<div className="text-center w-1/1 mb-2">
+				<h1 className="lowercase text-4xl font-bold pt-serif-bold">Blind Book Dating</h1>
+				<span className="pt-serif-bold-italic">Don't judge a book by its cover!</span>
+			</div>
+			<main className="flex flex-col sm:flex-row w-full max-w-3xl items-center justify-between py-8 px-16 bg-white border-2 border-amber-950 text-black rounded-md sm:items-start">
+				<div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
 					<h2 className="text-lg font-bold">Select your date</h2>
-				<GenreList />
+					<GenreList />
 				</div>
 				<div className="flex flex-col items-center gap-4 mt-5 text-center sm:items-start sm:text-left">
 					<SearchForm />
