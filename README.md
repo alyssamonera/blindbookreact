@@ -3,7 +3,7 @@ Meet your next book with the Blind Book Dating App! Swipe through descriptions o
 
 **Link to project:** https://blindbookreact.vercel.app/
 
-![A screenshot of the website. The header has the title 'Blind Book Dating App' and links to a demo and the login page. The main body shows a book summary with the title redacted, and the title 'Time to Swipe']([https://i.imgur.com/RfISsDK.png](https://i.imgur.com/vYeKbQ2.png)
+![A screenshot of the website. The header has the title 'Blind Book Dating App' and links to a demo and the login page. The main body shows a book summary with the title redacted, and the title 'Time to Swipe']([https://i.imgur.com/RfISsDK.png](https://i.imgur.com/vYeKbQ2.png))
 
 ## How It's Made:
 
