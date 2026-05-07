@@ -3,7 +3,7 @@ Meet your next book with the Blind Book Dating App! Swipe through descriptions o
 
 **Link to project:** https://blindbookreact.vercel.app/
 
-![A screenshot of the website. The header has the title 'Blind Book Dating App' and links to a demo and the login page. The main body shows a book summary with the title redacted, and the title 'Time to Swipe!'](https://i.imgur.com/RfISsDK.png)
+![A screenshot of the website. The header has the title 'Blind Book Dating App' and links to a demo and the login page. The main body shows a book summary with the title redacted, and the title 'Time to Swipe']([https://i.imgur.com/RfISsDK.png](https://i.imgur.com/vYeKbQ2.png)
 
 ## How It's Made:
 
@@ -30,8 +30,7 @@ Since the nature of the app is random, I provided a demo link in the header so y
 Then of course we also have the match page. This is currently locked behind a login page; once you've made an account and logged in, all your swipes will be saved to the PostgresQL database in Neon. We fetch books from that database based on your user ID. On this page you will see the full title and author and description for each right swipe. You are also able to remove a swipe if you no longer want it saved to your account.
 
 ## Future Optimizations
-* Either have a guest swipe view page that can be saved to the session or force the user to log in before swiping at all
-* Add book covers to the swipe view page
+* Hide covers on the match page unless the user clicks to reveal them
 * Perhaps also add links to where to buy the books? Need to check if the Google Books API has that data included
 * Upgrade the visuals
 * Add testing
