@@ -18,6 +18,7 @@
   --color-custom-sage-dark: #7aab95;
   --color-custom-green-dark: #22392e;
   --color-custom-input: #f3ede4;
+  --color-custom-rose: #c17b6b;
 }
 
 @media (prefers-color-scheme: dark) {

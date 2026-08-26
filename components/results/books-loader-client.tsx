@@ -46,7 +46,7 @@ export default function BooksLoaderClient({
     };
   }, [slug, q, userId]);
 
-  if (error || books?.length === 0) return <div className="text-center">Something went wrong. Please try again in a bit.</div>;
+  if (error || books?.length === 0) return <div className="text-center text-custom-brown-dark mt-16">Something went wrong. Please try again in a bit.</div>;
   if (books === null) return <LoadingPageRoot />;
 
   return <BooksCarousel books={books} />;
