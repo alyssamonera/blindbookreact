@@ -11,7 +11,7 @@ export default function BookProfileModal({ book, description, onClose }: { book:
             <button
                 onClick={onClose}
                 title="Close"
-                className="absolute top-3 left-3 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-custom-brown/20 text-custom-brown hover:bg-custom-brown-dark hover:text-custom-cream transition-colors duration-300 cursor-pointer focus:outline-none focus:border-2 focus:border-black"
+                className="absolute top-3 left-3 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-custom-brown/20 text-custom-brown hover:bg-custom-brown-dark hover:text-custom-cream transition-colors duration-300 cursor-pointer  focus:border-2 focus:border-black"
             >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M6 6l12 12M18 6L6 18" />

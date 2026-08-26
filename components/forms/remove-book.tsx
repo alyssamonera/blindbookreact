@@ -29,14 +29,14 @@ export default function RemoveBook({ volumeInfo, bookId, onClose, onRemove }: { 
             <div className="flex justify-end gap-2 mt-4">
                 <button
                     onClick={onClose}
-                    className="bg-custom-brown/30 text-custom-brown hover:bg-custom-brown-dark hover:text-custom-cream px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300 focus:outline-none focus:border-2 focus:border-black"
+                    className="bg-custom-brown/30 text-custom-brown hover:bg-custom-brown-dark hover:text-custom-cream px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300  focus:border-2 focus:border-black"
                 >
                     Cancel
                 </button>
                 <button
                     onClick={handleRemove}
                     disabled={isLoading}
-                    className="bg-red-900 text-white hover:bg-white hover:text-red-900 border border-red-900 px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300 focus:outline-none focus:border-2 focus:border-black disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="bg-red-900 text-white hover:bg-white hover:text-red-900 border border-red-900 px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300  focus:border-2 focus:border-black disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                     {isLoading ? "Removing..." : "Remove"}
                 </button>

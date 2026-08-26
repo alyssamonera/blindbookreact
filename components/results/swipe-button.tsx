@@ -23,7 +23,7 @@ export default function SwipeButton({direction, book, onBeforeSwipe}: SwipeProps
 
     return <button
         onClick={onClick}
-        className={`h-full w-16 md:w-20 flex items-center justify-center ${btnStyle} text-custom-brown-dark hover:text-${direction == 'left' ? 'custom-cream' : 'black'} transition-colors duration-300 ease-in-out cursor-pointer rounded-3xl shadow-lg shadow-black/10 border focus:outline-none focus:border-2 focus:border-black`}
+        className={`h-full w-16 md:w-20 flex items-center justify-center ${btnStyle} text-custom-brown-dark hover:text-${direction == 'left' ? 'custom-cream' : 'black'} transition-colors duration-300 ease-in-out cursor-pointer rounded-3xl shadow-lg shadow-black/10 border  focus:border-2 focus:border-black`}
         title={`Swipe ${direction}`}
     >
         {direction === 'left' && (

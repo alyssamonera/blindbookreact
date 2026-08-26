@@ -39,7 +39,7 @@ export default function Tile({book, onRemove}: {book: bookResult, onRemove: (id:
                 <div className="text-right mt-auto">
                     <button
                         onClick={() => setShowProfile(true)}
-                        className="text-sm font-medium text-custom-brown hover:text-custom-sage-dark underline cursor-pointer focus:outline-none focus:border-2 focus:border-black"
+                        className="text-sm font-medium text-custom-brown hover:text-custom-sage-dark underline cursor-pointer  focus:border-2 focus:border-black"
                     >
                         Read more
                     </button>
