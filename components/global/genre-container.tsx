@@ -10,7 +10,7 @@ function normalizeGenre(genre?: string): string {
 }
 
 export default function GenreContainer({ genre }: { genre?: string }) {
-    let gradientClass = 'from-background to-custom-sage-dark'
+    let gradientClass = 'from-background/60 to-custom-sage-dark'
     const genreList = Object.keys(genres)
 
     const normalized = normalizeGenre(genre);
