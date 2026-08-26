@@ -13,9 +13,11 @@ export const genres = {
 		displayValue: "Memoir",
 		searchValue: "personal_memoirs",
 		normalized: "memoir",
-		svg: `<path d="M19 3c-4 1-9 5.5-11 10.5L6.5 17 10 14.5C15 12.5 19.5 7.5 19 3z" />
-                <path d="M11.5 12.5L5 19" />
-                <ellipse cx="5.5" cy="19.5" rx="2.5" ry="1.3" />`,
+		svg: `<circle cx="6.8" cy="14" r="3.2" />
+                <circle cx="17.2" cy="14" r="3.2" />
+                <path d="M10 13.3h4" />
+                <path d="M3.6 12.5L2 10" />
+                <path d="M20.4 12.5L22 10" />`,
 		color: "from-blue-500 to-blue-900"
 	},
 	"science%20fiction": {
