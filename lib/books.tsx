@@ -16,17 +16,46 @@ const fields = 'items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/descript
 
 const CACHE_TTL = 1000 * 60 * 60 * 12; // 12 hours
 
-const sql = neon(process.env.DATABASE_URL!);
+// Spacing between successive Google Books calls so we don't burst past their rate limit
+const CALL_SPACING_MS = 250;
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-let cache: Record<string, any> = {};
+const sql = neon(process.env.DATABASE_URL!);
 
 /**
  * Checks how long it has been since the last cache
- * @param timestamp 
- * @returns 
+ * @param timestamp
+ * @returns
  */
 function isCacheFresh(timestamp: number) {
     return Date.now() - timestamp < CACHE_TTL;
+}
+
+/**
+ * Reads a cached result set for a query key from the books_cache table
+ * @param queryKey The cache key
+ * @returns The cached results and when they were stored, or null if not cached
+ */
+async function getCachedBooks(queryKey: string): Promise<{ finalResults: bookResult[]; timestamp: number } | null> {
+    const rows = await sql`
+        SELECT results, updated_at FROM public.books_cache WHERE query_key = ${queryKey}
+    `;
+    if (!rows || rows.length === 0) return null;
+
+    return { finalResults: rows[0].results, timestamp: new Date(rows[0].updated_at).getTime() };
+}
+
+/**
+ * Upserts a result set for a query key into the books_cache table
+ * @param queryKey The cache key
+ * @param finalResults The results to store
+ */
+async function setCachedBooks(queryKey: string, finalResults: bookResult[]) {
+    await sql`
+        INSERT INTO public.books_cache (query_key, results, updated_at)
+        VALUES (${queryKey}, ${JSON.stringify(finalResults)}, now())
+        ON CONFLICT (query_key) DO UPDATE SET results = EXCLUDED.results, updated_at = EXCLUDED.updated_at
+    `;
 }
 
 /**
@@ -287,6 +316,7 @@ async function getByEra(querystring: string, seen: Set<string>, pageSize: number
         for (let i = pageSize; i < maxStartIndex; i += pageSize) {
             if (signal?.aborted) break;
 
+            await wait(CALL_SPACING_MS);
             const nextBatch = await apiCall(
                 `https://www.googleapis.com/books/v1/volumes?q=${querystring}+${era}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=${fields}&key=${key}`, signal
             );
@@ -296,6 +326,8 @@ async function getByEra(querystring: string, seen: Set<string>, pageSize: number
             }
             if (nextBatch.items.length < pageSize) break;
         }
+
+        await wait(CALL_SPACING_MS);
     }
 
     return results;
@@ -322,6 +354,7 @@ async function batchCallBooks(querystring: string, signal?: AbortSignal) {
         for (let i = pageSize; i < maxStartIndex; i += pageSize) {
             if (signal?.aborted) break;
 
+            await wait(CALL_SPACING_MS);
             const nextBatch = await apiCall(
                 `https://www.googleapis.com/books/v1/volumes?q=${querystring}&langRestrict=en&maxResults=${pageSize}&startIndex=${i}&fields=${fields}&key=${key}`, signal
             );
@@ -361,7 +394,8 @@ export async function getBooks(
         return curateBooks(DUMMY_BOOKS);
     }
     
-    const cached = cache[`books:${querystring}`];
+    const queryKey = `books:${querystring}`;
+    const cached = await getCachedBooks(queryKey);
 
     // Fresh cache — return immediately
     if (cached && isCacheFresh(cached.timestamp)) {
@@ -374,7 +408,7 @@ export async function getBooks(
             .then(selected => curateBooks(selected, userId))
             .then(results => {
                 if (results.length > 0 && !signal?.aborted) {
-                    cache[`books:${querystring}`] = { finalResults: results, timestamp: Date.now() };
+                    setCachedBooks(queryKey, results);
                 }
                 return results;
             });
