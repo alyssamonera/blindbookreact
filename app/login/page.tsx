@@ -11,10 +11,13 @@ export default function LoginPage() {
     const [signupFormState, signupFormAction] = useActionState(login, { message: null, error: false });
     const [loginFormState, loginFormAction] = useActionState(login, { message: null, error: false });
 
-    return <div>
-        <main className="flex flex-wrap gap-40 justify-center">
+    return <div className="px-4 pb-16">
+        <div className="text-center mt-16 mb-10">
+            <h1 className="text-4xl italic pt-serif-regular-italic text-custom-brown-dark">Blind Book Dating</h1>
+        </div>
+        <main className="flex flex-wrap gap-8 justify-center items-stretch">
             <FormWrapper action={signupFormAction} formState={signupFormState}>
-                <div>
+                <div className="flex flex-col h-full">
                     <LoginHeading>Sign up to save your dates</LoginHeading>
                     <Input type="text" id="name" name="name" label="Name" required />
                     <Input type="email" id="email" name="email" label="Email" required />

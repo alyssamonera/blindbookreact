@@ -25,12 +25,19 @@ export default function RemoveBook({ volumeInfo, bookId, onClose, onRemove }: { 
 
     return (
         <Modal onClose={onClose}>
-            <h2>Are you sure you want to remove <span className="font-semibold"><span className="italic">{volumeInfo.title}</span> by {volumeInfo.authors.join(", ")}</span>?</h2>
-            <div className="flex justify-end mt-4">
-                <button className="bg-gray-300 p-2 mr-2 cursor-pointer" onClick={onClose}>
+            <h2 className="pt-serif-regular text-xl">Are you sure you want to remove <span className="font-semibold"><span className="italic">{volumeInfo.title}</span> by {volumeInfo.authors.join(", ")}</span>?</h2>
+            <div className="flex justify-end gap-2 mt-4">
+                <button
+                    onClick={onClose}
+                    className="bg-custom-brown/30 text-custom-brown hover:bg-custom-brown-dark hover:text-custom-cream px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300  focus:border-2 focus:border-black"
+                >
                     Cancel
                 </button>
-                <button className="bg-red-500 p-2 text-white cursor-pointer" onClick={handleRemove} disabled={isLoading}>
+                <button
+                    onClick={handleRemove}
+                    disabled={isLoading}
+                    className="bg-red-900 text-white hover:bg-white hover:text-red-900 border border-red-900 px-5 py-2 rounded-full font-medium cursor-pointer transition-colors duration-300  focus:border-2 focus:border-black disabled:opacity-60 disabled:cursor-not-allowed"
+                >
                     {isLoading ? "Removing..." : "Remove"}
                 </button>
             </div>

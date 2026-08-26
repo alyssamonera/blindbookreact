@@ -228,7 +228,7 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
     if (!userId || userId === '') return [];
 
     const likedBooks = await sql`
-        SELECT book_id, title, description, authors, image FROM public.liked_books WHERE user_id = ${userId}
+        SELECT book_id, title, description, authors, image, genre FROM public.liked_books WHERE user_id = ${userId}
     `;
 
     if (!likedBooks || likedBooks.length === 0) {
@@ -247,6 +247,7 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
                 }
             },
             censoredDescription: row.description,
+            genre: row.genre || undefined,
         };
     });
     return books;

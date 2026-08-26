@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BooksCarousel from "./books-carousel";
 import type { bookResult } from "@/shared/types";
 import LoadingPageRoot from "@/app/loading";
+import { BooksContext } from "@/app/context/books-context";
 
 export default function BooksLoaderClient({
   slug,
@@ -16,11 +17,13 @@ export default function BooksLoaderClient({
 }) {
   const [books, setBooks] = useState<bookResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { setGenre } = useContext(BooksContext);
 
   useEffect(() => {
     const controller = new AbortController();
     setBooks(null);
     setError(null);
+    setGenre(slug !== "search" && slug !== "demo" ? slug : undefined);
 
     const params = new URLSearchParams();
     params.set("slug", slug);

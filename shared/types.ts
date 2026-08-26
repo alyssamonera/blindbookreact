@@ -4,7 +4,9 @@ export type genreInput = keyof typeof genres;
 
 export type genreType = {
 	displayValue: string,
-	searchValue: string
+	searchValue: string,
+	svg: string,
+	color: string
 }
 
 export type bookResult = {
@@ -17,5 +19,6 @@ export type bookResult = {
 			thumbnail?: string
 		}
 	};
-	censoredDescription: string
+	censoredDescription: string;
+	genre?: string;
 };
