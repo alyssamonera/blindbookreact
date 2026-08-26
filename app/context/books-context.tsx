@@ -9,6 +9,7 @@ type BooksContextObject = {
 	handleSwipe: (direction: string, book?: bookResult) => void;
 	resetIndex: () => void;
 	handleMaxIndex: (index: number) => void;
+	setGenre: (genre?: string) => void;
 };
 
 export const BooksContext = createContext<BooksContextObject>({
@@ -17,6 +18,7 @@ export const BooksContext = createContext<BooksContextObject>({
 	handleSwipe: () => {},
 	resetIndex: () => {},
 	handleMaxIndex: () => {},
+	setGenre: () => {},
 });
 
 const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -25,12 +27,13 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [maxIndex, setMaxIndex] = useState<number | null>(null);
 	const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
+	const [genre, setGenre] = useState<string | undefined>(undefined);
 
 	async function saveBookToProfile(book: bookResult) {
 		const result = await fetch('/api/like-book', {
 			method: "POST",
 			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify(book)
+			body: JSON.stringify({ ...book, genre })
 		});
 
 		// TODO: Error handling
@@ -64,6 +67,7 @@ const BooksContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		handleSwipe,
 		resetIndex,
 		handleMaxIndex,
+		setGenre,
 	};
 
 	return <BooksContext.Provider value={ctx}>{children}</BooksContext.Provider>;

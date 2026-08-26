@@ -1,12 +1,14 @@
 "use client";
 
 import { bookResult } from "@/shared/types";
+import Genre from "@/components/global/genre-container";
 import TileFooter from "./tileFooter";
+import BookProfileModal from "./book-profile-modal";
 import { useEffect, useState } from "react";
 
 export default function Tile({book, onRemove}: {book: bookResult, onRemove: (id: string) => void}) {
     const [description, setDescription] = useState<string>('');
-    const img = book?.volumeInfo?.imageLinks?.thumbnail;
+    const [showProfile, setShowProfile] = useState(false);
 
     // Since this is blank on pageload, need to use this to avoid hydration error
     useEffect(() => {
@@ -16,18 +18,34 @@ export default function Tile({book, onRemove}: {book: bookResult, onRemove: (id:
     }, [book]);
 
     return (
-        <li key={book.id} className="bg-white border rounded-lg shadow p-4 flex flex-col">
-            <div className="flex-1 border-b-2 border-gray-200 mb-4">
-                <div className="flex justify-center">
-                    {book.volumeInfo.imageLinks?.thumbnail && <img src={img} className="w-1/2" />}
+        <li key={book.id} className="relative bg-white border rounded-2xl shadow-lg overflow-hidden flex flex-col">
+            <TileFooter book={book} onRemove={onRemove} />
+            <Genre genre={book.genre} />
+            <div className="p-6 flex flex-col flex-1">
+                <div className="mb-4">
+                    <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">My name</span>
+                    <span className="block text-xl pt-serif-bold mt-1">{book.volumeInfo.title}</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{book.volumeInfo.title}</h3>
-                <p className="text-sm text-gray-600 mb-4">by {book.volumeInfo.authors.join(", ")}</p>
-                <div className="text-sm text-gray-700 mb-4 max-h-50 overflow-y-auto">
-                    <p dangerouslySetInnerHTML={{ __html: description }}></p>
+                <div className="mb-4">
+                    <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">My author</span>
+                    <span className="block text-sm mt-1">{book.volumeInfo.authors.join(", ")}</span>
+                </div>
+                <div className="mb-4">
+                    <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">About me</span>
+                    <div className="text-sm mt-1 line-clamp-4">
+                        <p dangerouslySetInnerHTML={{ __html: description }}></p>
+                    </div>
+                </div>
+                <div className="text-right mt-auto">
+                    <button
+                        onClick={() => setShowProfile(true)}
+                        className="text-sm font-medium text-custom-brown hover:text-custom-sage-dark underline cursor-pointer focus:outline-none focus:border-2 focus:border-black"
+                    >
+                        Read more
+                    </button>
                 </div>
             </div>
-            <TileFooter book={book} onRemove={onRemove} />
+            {showProfile && <BookProfileModal book={book} description={description} onClose={() => setShowProfile(false)} />}
         </li>
     );
 }

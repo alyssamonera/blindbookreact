@@ -5,18 +5,38 @@ export const genres = {
 	romance: {
 		displayValue: "Romance",
 		searchValue: "love+fiction",
+		normalized: "romance",
+		svg: `<path d="M12 20.5S3 15 3 8.7C3 5.6 5.2 3.5 8 3.5c1.8 0 3.3 1 4 2.6.7-1.6 2.2-2.6 4-2.6 2.8 0 5 2.1 5 5.2 0 6.3-9 11.8-9 11.8z" />`,
+		color: "from-rose-300 to-pink-800"
 	},
 	memoir: {
 		displayValue: "Memoir",
 		searchValue: "personal_memoirs",
+		normalized: "memoir",
+		svg: `<path d="M19 3c-4 1-9 5.5-11 10.5L6.5 17 10 14.5C15 12.5 19.5 7.5 19 3z" />
+                <path d="M11.5 12.5L5 19" />
+                <ellipse cx="5.5" cy="19.5" rx="2.5" ry="1.3" />`,
+		color: "from-blue-500 to-blue-900"
 	},
 	"science%20fiction": {
 		displayValue: "Sci-Fi",
 		searchValue: "science_fiction",
+		normalized: "science fiction",
+		svg: ` <circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none" />
+                <ellipse cx="12" cy="12" rx="9" ry="3.6" />
+                <ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)" />
+                <ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)" />`,
+		color: "from-lime-400 to-emerald-700"
 	},
 	fantasy: {
 		displayValue: "Fantasy",
 		searchValue: "fantasy",
+		normalized: "fantasy",
+		svg: `<path d="M12 3l3 11.5c-1-.5-1.9-.8-3-.8s-2 .3-3 .8L12 3z" />
+                <path d="M4 18.5c2.2-1.3 5-2 8-2s5.8.7 8 2" />
+                <path d="M4 18.5c0 1 3.6 1.8 8 1.8s8-.8 8-1.8" />
+                <path d="M12 5.2l.6 1.8" strokeWidth="1.3" />`,
+		color: "from-fuchsia-500 to-violet-900"
 	},
 } as const;
 export const alphabet = [

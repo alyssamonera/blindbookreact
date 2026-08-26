@@ -5,7 +5,7 @@ const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(req: Request) {
     try {
-        const { id, volumeInfo } = await req.json();
+        const { id, volumeInfo, genre } = await req.json();
 
         if (!id) {
             return new Response(null, { status: 204 });
@@ -24,8 +24,8 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         const result = await sql`
-            INSERT INTO liked_books (user_id, book_id, title, description, authors, image)
-            VALUES (${userId}, ${id}, ${title}, ${description}, ${authorsString}, ${imageLinks.thumbnail})
+            INSERT INTO liked_books (user_id, book_id, title, description, authors, image, genre)
+            VALUES (${userId}, ${id}, ${title}, ${description}, ${authorsString}, ${imageLinks.thumbnail}, ${genre || null})
             ON CONFLICT (user_id, book_id) DO NOTHING
             RETURNING book_id
         `;

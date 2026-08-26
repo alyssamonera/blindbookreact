@@ -10,7 +10,7 @@ export default async function MyBookPage() {
 		const selectedBooks = await getUserBooks(session?.user.id || '');
 
 		if (!selectedBooks || selectedBooks.length === 0) {
-			return <div>
+			return <div className="text-center italic pt-serif-regular-italic">
 				Nothing here yet...
 			</div>
 		}
@@ -22,8 +22,8 @@ export default async function MyBookPage() {
 
 	return (
 		<>
-			<div className="text-center my-3">
-				<h1 className="text-3xl pt-serif-bold">My Books</h1>
+			<div className="text-center my-6">
+				<h1 className="text-4xl italic pt-serif-regular-italic">My Books</h1>
 			</div>
 			<Suspense fallback={<LoadingPageRoot />}>
 				<TileContainer />
