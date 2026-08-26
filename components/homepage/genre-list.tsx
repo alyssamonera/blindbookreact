@@ -15,8 +15,8 @@ export default function GenreList() {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="flex gap-2 items-center">
-			<select required className="bg-gray-300 p-3 rounded" name="genre" defaultValue="">
+		<form onSubmit={handleSubmit} className="flex gap-3 items-center">
+			<select required className="flex-grow bg-custom-input border border-custom-brown/10 text-custom-brown text-sm font-medium px-5 py-4 rounded-full cursor-pointer" name="genre" defaultValue="">
 				<option value="" disabled>Pick a genre</option>
 				{Object.keys(genres).map((key) => {
 					const genre = genres[key as genreInput];
@@ -30,7 +30,7 @@ export default function GenreList() {
 					Fairytale
 				</option>
 			</select>
-			<button className="block bg-green-800 hover:bg-green-400 text-white hover:text-black cursor-pointer px-3 py-2 rounded">Go</button>
+			<button className="flex-shrink-0 bg-background/50 hover:bg-custom-brown-dark text-custom-green-dark hover:text-custom-cream font-semibold cursor-pointer px-8 py-4 rounded-full shadow-lg shadow-background/40 transition-colors duration-300   focus:border-2 focus:border-black">Go</button>
 		</form>
 	);
 }
