@@ -3,7 +3,7 @@ import SearchForm from "@/components/homepage/search-form";
 
 export default function Home() {
 	return (
-		<div className="flex flex-col items-center justify-center dark:bg-black px-4 pb-16">
+		<div className="flex flex-col items-center justify-center px-4 pb-16">
 			<div className="text-center mt-16 mb-2">
 				<h1 className="lowercase text-6xl italic font-medium pt-serif-regular-italic text-custom-brown-dark">Blind Book Dating</h1>
 				<span className="block mt-4 text-xl italic pt-serif-regular-italic text-custom-brown-dark opacity-85">Don't judge a book by its cover!</span>
