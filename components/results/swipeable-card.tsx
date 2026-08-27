@@ -48,17 +48,19 @@ export default function SwipeableCard({ book, onSwipe }: SwipeableCardProps) {
 			transition={{ duration: 0.2 }}
 			className="relative flex-grow"
 		>
+			{/* X Swipe left */}
 			<motion.div
 				style={{ opacity: passOpacity }}
-				className="pointer-events-none absolute top-6 left-6 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-custom-rose text-custom-cream shadow-lg"
+				className="pointer-events-none absolute bottom-3 right-3 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-custom-rose text-custom-cream shadow-lg"
 			>
 				<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
 					<path d="M6 6l12 12M18 6L6 18" />
 				</svg>
 			</motion.div>
+			{/* V Swipe right */}
 			<motion.div
 				style={{ opacity: likeOpacity }}
-				className="pointer-events-none absolute top-6 right-6 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-custom-sage-dark text-custom-cream shadow-lg"
+				className="pointer-events-none absolute bottom-3 left-3 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-custom-sage-dark text-custom-cream shadow-lg"
 			>
 				<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 					<path d="M5 13l4 4L19 7" />
