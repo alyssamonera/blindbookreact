@@ -1,14 +1,15 @@
 import { getSession } from "@/lib/actions/login";
 import HeaderNav from "./header-nav";
+import StickyHeader from "./sticky-header";
 
 export default async function Header() {
 	const session = await getSession();
 
 	return (
-		<div className="p-4 sm:p-6">
+		<StickyHeader>
 			<header className="relative z-100 flex flex-wrap items-center justify-between gap-4 lowercase pt-serif-regular bg-white/55 backdrop-blur-md border border-white/60 shadow-lg shadow-black/10 rounded-full px-6 py-3">
 				<HeaderNav hasSession={!!session?.user} />
 			</header>
-		</div>
+		</StickyHeader>
 	);
 }
