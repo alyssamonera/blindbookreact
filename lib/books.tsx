@@ -12,7 +12,7 @@ const ERA_FILTERS = [
     'after:2018',
 ];
 
-const fields = 'items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description,volumeInfo/imageLinks/thumbnail)';
+const fields = 'items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/description)';
 
 const CACHE_TTL = 1000 * 60 * 60 * 12; // 12 hours
 
@@ -214,7 +214,7 @@ export async function getBookById(bookId: string, key?: string): Promise<bookRes
     }
 
     const res = await apiCall(
-        `https://www.googleapis.com/books/v1/volumes/${bookId}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description,volumeInfo/imageLinks/thumbnail&key=${key}`,
+        `https://www.googleapis.com/books/v1/volumes/${bookId}?fields=id,volumeInfo/title,volumeInfo/authors,volumeInfo/description&key=${key}`,
     );
     return res || null;
 }
@@ -228,7 +228,7 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
     if (!userId || userId === '') return [];
 
     const likedBooks = await sql`
-        SELECT book_id, title, description, authors, image, genre FROM public.liked_books WHERE user_id = ${userId}
+        SELECT book_id, title, description, authors, genre FROM public.liked_books WHERE user_id = ${userId}
     `;
 
     if (!likedBooks || likedBooks.length === 0) {
@@ -241,10 +241,7 @@ export async function getUserBooks(userId: string): Promise<bookResult[]> {
             volumeInfo: {
                 title: row.title,
                 description: row.description,
-                authors: row.authors ? row.authors.split(',').map((a: string) => a.trim()) : [],
-                imageLinks: {
-                    thumbnail: row.image || ''
-                }
+                authors: row.authors ? row.authors.split(',').map((a: string) => a.trim()) : []
             },
             censoredDescription: row.description,
             genre: row.genre || undefined,

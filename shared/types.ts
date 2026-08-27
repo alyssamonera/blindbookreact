@@ -15,9 +15,6 @@ export type bookResult = {
 		authors: string[];
 		description: string;
 		title: string;
-		imageLinks?: {
-			thumbnail?: string
-		}
 	};
 	censoredDescription: string;
 	genre?: string;
