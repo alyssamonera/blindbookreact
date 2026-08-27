@@ -18,21 +18,21 @@ export default function Tile({book, onRemove}: {book: bookResult, onRemove: (id:
     }, [book]);
 
     return (
-        <li key={book.id} className="relative bg-white border rounded-2xl shadow-lg overflow-hidden flex flex-col">
+        <li key={book.id} className="relative min-w-0 bg-white border rounded-2xl shadow-lg overflow-hidden flex flex-col mx-5 sm:mx-0">
             <TileFooter book={book} onRemove={onRemove} />
             <Genre genre={book.genre} />
             <div className="p-6 flex flex-col flex-1">
                 <div className="mb-4">
                     <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">My name</span>
-                    <span className="block text-xl pt-serif-bold mt-1">{book.volumeInfo.title}</span>
+                    <span className="block text-xl pt-serif-bold mt-1 wrap-break-word">{book.volumeInfo.title}</span>
                 </div>
                 <div className="mb-4">
                     <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">My author</span>
-                    <span className="block text-sm mt-1">{book.volumeInfo.authors.join(", ")}</span>
+                    <span className="block text-sm mt-1 wrap-break-word">{book.volumeInfo.authors.join(", ")}</span>
                 </div>
                 <div className="mb-4">
                     <span className="block text-xs uppercase tracking-widest text-custom-sage-dark font-semibold">About me</span>
-                    <div className="text-sm mt-1 line-clamp-4">
+                    <div className="text-sm mt-1 line-clamp-4 wrap-break-word">
                         <p dangerouslySetInnerHTML={{ __html: description }}></p>
                     </div>
                 </div>
