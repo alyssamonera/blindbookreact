@@ -21,17 +21,14 @@
   --color-custom-rose: #c17b6b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Work Sans", Arial, Helvetica, sans-serif;
+}
+
+a:focus:not(.login) {
+  border: 2px solid black;
 }
 
 /* GOOGLE FONT */
